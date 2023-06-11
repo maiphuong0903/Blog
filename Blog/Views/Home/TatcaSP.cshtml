@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutBlog.cshtml";
+}
+@model List<Post>
+
+<div class="border border-1 w-full h-[50px] py-3 px-3">
+    <a class="ml-[135px] text-md font-medium" asp-action="Index">Home</a>
+    <span> > </span>
+    <a>Sản Phẩm</a>
+</div>
+<div class="grid grid-cols-3 gap-8 px-36 my-4">
+    @foreach (var item in Model)
+    {
+                <div>
+                    <img class="h-[200px] w-[360px] object-cover" src="@Url.Content("../img/"+item.Picture)" alt="">
+                    <div class="border border-1 w-[360px] py-3 px-2 bg-white drop-shadow-xl h-[120px]">
+                        <h1 class="font-medium"><a maspasp-controller="Home" asp-action="ChiTietSanPham" asp-route-masp="@item.PostId"> @item.PostName</a></h1>
+                        <div class="flex gap-4">
+                            <h2 class="font-medium"><span class="font-normal text-gray-400">by</span> @item.Author</h2>
+                            <span>|</span>
+                            <p class="font-normal text-gray-400">@item.CreateDate</p>
+                        </div>
+                    </div>
+                </div>
+
+    }
+</div>
+    
+
+

@@ -1,0 +1,38 @@
+﻿@model Blog.Models.Post
+
+@{
+    ViewData["Title"] = "ChiTietSanPham";
+    Layout = "~/Views/Shared/_LayoutBlog.cshtml";
+}
+
+<div class="flex gap-3 ml-[300px] mt-[100px]">
+    <img class="w-1/3 h-[300px]" src="@Url.Content("../img/" + Model.Picture)" alt="">
+    <div class="px-4 w-[486px]">
+        <h1 class="text-xl font-bold pb-3">@Model.PostName</h1>
+        <div class="flex gap-3 pb-5">
+            <p class="font-semibold"><span class="font-normal text-gray-500">by</span> @Model.Author</p>
+            <span>|</span>
+            <p>@Model.CreateDate</p>
+        </div>
+        <p class="font-serif leading-6">@Model.ShortContent</p>
+    </div>
+</div>
+<div class="">
+    <p class="ml-[300px] py-3 w-[923px] leading-7 font-serif">@Model.Contents</p>
+</div>
+
+<div class="w-[923px] justify-center border border-1 bg-white drop-shadow-xl px-6 py-6 mx-64 my-7 ml-[300px]">
+    <form action="">
+        <h1 class="text-3xl font-medium">Bình luận</h1>
+        <p class="py-4">Số lượng bình luận</p>
+        <hr>
+        <div class="flex gap-5 py-5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="w-[60px] h-[60px]">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <input class="border border-1 w-[800px] h-[60px] px-2 py-2" type="text" name="" id="" placeholder="Viết bình luận ...">
+        </div>
+        <hr>
+        <button class="border border-1 w-[800px] h-[50px] my-3 bg-[#f5f5f5] text-lg ml-20 rounded-lg text-gray-800 font-medium">Submit</button>
+    </form>
+</div>

@@ -1,0 +1,67 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    BlogContext db = new BlogContext();
+    var cm = db.Categories.ToList();
+}
+<div class="header px-8 py-5 text-lg bg-[#0f1c49] text-gray-400 cursor-pointer">
+    <nav class="border-gray-200 flex gap-7">
+        <h1 class="text-3xl items-center text-[#d8e1ea] ml-[110px] mr-4">BlogPhg</h1>
+        <ul class="flex gap-5 items-center">
+            <li><a asp-action="Index">Home</a></li>
+            <li><a asp-action="TatCaSP">Sản Phẩm</a></li>
+            <li class="relative" onclick="toggleSubmenu()">
+                Categorys
+                <ul class="submenu absolute top-full left-0 right-0 border border-1 rounded-md bg-white drop-shadow-lg w-[100px] px-3 py-3 hidden">
+                    @foreach(var item in cm)
+                    {
+                        var getUrl = "https://localhost:7137/api/SanPhamAPI/" + item.CatId;
+                        <li><a onclick ="getProduct('@getUrl')">@item.CatName</a></li>
+                    }
+                </ul>
+            </li>
+            <li class="ml-[500px] text-[#d8e1ea]">Xin chào</li>
+            <li class="ml-10 text-[#d8e1ea]">Đăng xuất</li>
+        </ul>
+    </nav>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+	function getProduct(getUrl) {
+		var str = '';
+		$.ajax({
+			url: getUrl,
+			method: "GET",
+			contentType: "json",
+			dataType: "json",
+			error: function (response) {
+				console.log(response);
+			},
+			success: function (data) {
+				console.log('ok');
+				$.each(data, function (key, val) {
+                   str += `<img class="w-full h-[550px] object-fill" src="https://plus.unsplash.com/premium_photo-1675804669838-623a874bc34b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="">
+                        <!-- chia sẻ cách làm bánh -->
+                        <div class="cakes">
+                            <h2 class="py-4 ml-36 text-2xl">Baking category</h2>
+                            <div class="grid grid-cols-3 gap-8 px-36">
+                    <div>
+                            <img class="h-[200px] w-[360px] object-cover" src="../img/${val.picture}" alt="">
+                    <div class="border border-1 w-[360px] py-3 px-2 bg-white drop-shadow-xl h-[120px]">
+                                <h1 class="font-medium"><a asp-controller="Home" asp-action="ChiTietSanPham" asp-route-masp="${val.postId}">${val.postName}</a></h1>
+                        <div class="flex gap-4">
+                                    <h2 class="font-medium"><span class="font-normal text-gray-400">by</span> ${val.author}</h2>
+                            <span>|</span>
+                                    <p class="font-normal text-gray-400">${val.createDate}</p>
+                        </div>
+                  </div>
+                    </div>
+                    </div>
+                </div>`
+				});
+				console.log(str);
+                $('#displayProducts').html(str);
+			}
+		});
+	}
+</script>

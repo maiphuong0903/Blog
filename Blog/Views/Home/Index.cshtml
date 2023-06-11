@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutBlog.cshtml";
+}
+@model List<Post>
+<img class="w-full h-[550px] object-fill" src="https://plus.unsplash.com/premium_photo-1675804669838-623a874bc34b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="">
+<!-- chia sẻ cách làm bánh -->
+<div class="cakes">
+    <h2 class="py-4 ml-36 text-2xl">Baking category</h2>
+    <div class="grid grid-cols-3 gap-8 px-36">
+        @foreach (var item1 in ViewBag.spFood)
+    {
+        <div>
+                <img class="h-[200px] w-[360px] object-cover" src="@Url.Content("../img/"+item1.Picture)" alt="">
+                <div class="border border-1 w-[360px] py-3 px-2 bg-white drop-shadow-xl h-[120px]">
+                    <h1 class="font-medium"><a asp-controller="Home" asp-action="ChiTietSanPham" asp-route-masp="@item1.PostId">@item1.PostName</a></h1>
+                    <div class="flex gap-4">
+                        <h2 class="font-medium"><span class="font-normal text-gray-400">by</span> @item1.Author</h2>
+                        <span>|</span>
+                        <p class="font-normal text-gray-400">@item1.CreateDate</p>
+                    </div>
+              </div>
+        </div>   
+        
+    }
+    </div>   
+</div>
+<!-- chia sẻ những chuyến du lịch -->
+<div class="travel mt-8">
+    <h2 class="py-4 ml-36 text-2xl">Baking category</h2>
+    <div class="grid grid-cols-3 gap-8 px-36">
+        @foreach (var item2 in ViewBag.spTravel)
+        {
+            <div>
+                <img class="h-[200px] w-[360px] object-cover" src="@Url.Content("../img/"+item2.Picture)" alt="">
+                <div class="border border-1 w-[360px] py-3 px-2 bg-white drop-shadow-xl h-[120px]">
+                    <h1 class="font-medium"><a asp-controller="Home" asp-action="ChiTietSanPham" asp-route-masp="@item2.PostId">@item2.PostName</a></h1>
+                    <div class="flex gap-4">
+                        <h2 class="font-medium"><span class="font-normal text-gray-400">by</span> @item2.Author</h2>
+                        <span>|</span>
+                        <p class="font-normal text-gray-400">@item2.CreateDate</p>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>

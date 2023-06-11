@@ -1,0 +1,61 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Blog.Models.Account>
+
+@{
+    ViewData["Title"] = "ListUser";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h1 class="text-xl font-medium my-5">Danh Sách Truy Cập</h1>
+
+<p>
+    <a asp-action="ThemUser" class="shadow bg-blue-400 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Create New</a>
+</p>
+<table class="table-auto w-full mt-7">
+    <thead>
+        <tr>
+            <th class="border">
+                STT
+            </th>
+            <th class="border">
+                Tên Tài Khoản
+            </th>
+            <th class="border">
+                Email
+            </th>
+            <th class="border">
+                Password
+            </th> 
+            <th class="border">
+                Description
+            </th>
+            <th class="border"></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="text-center border w-[100px]">
+                    @Html.DisplayFor(modelItem => item.AccountId)
+            </td>
+            <td class="text-center border">
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td class="border py-4 text-center">
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td class="border py-4 text-center">
+                @Html.DisplayFor(modelItem => item.Password)
+            </td> 
+            <td class="border py-4 text-center">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+                <td class="border flex-column gap-6 px-3">
+                    <a asp-action="SuaUser" asp-route-accountID="@item.AccountId" class="shadow bg-green-500 hover:bg-green-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-2 rounded">Edit</a>
+                    <a asp-action="XoaUser" asp-route-accountID="@item.AccountId" class="shadow bg-red-500 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-2 rounded">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

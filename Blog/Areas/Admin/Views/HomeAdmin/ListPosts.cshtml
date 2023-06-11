@@ -1,0 +1,63 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Blog.Models.Post>
+
+@{
+    ViewData["Title"] = "ListPosts";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="text-xl font-medium my-5">Danh Sách Bài Đăng</h1>
+
+<p>
+    <a asp-action="ThemBaiViet" class="shadow bg-blue-400 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Create New</a>
+</p>
+<table class="table-auto w-full mt-7">
+    <thead>
+        <tr>
+            <th class="border">
+                STT
+            </th>
+            <th class="border">
+                Tên Bài Viết
+            </th>
+            <th class="border">
+                Mô tả ngắn
+            </th>  
+            <th class="border">
+                Tác Gỉa
+            </th>
+            <th class="border">
+                Ảnh
+            </th>          
+            <th class="border"></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="text-center border w-[70px]">
+                @Html.DisplayFor(modelItem => item.PostId)
+            </td>
+            <td class="text-center border w-[300px]">
+                @Html.DisplayFor(modelItem => item.PostName)
+            </td>
+            <td class="border py-4 w-[430px] text-center">
+                @Html.DisplayFor(modelItem => item.ShortContent)
+            </td>
+            <td class="border py-4 w-[150px] text-center">
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td class="border py-4 w-[200px]">
+                <img src="@Url.Content("~/img/" + item.Picture)" alt="Ảnh" class="w-[200px] h-[150px] px-3 py-2 object-cover" />
+            </td>           
+            <td class="border w-[180px] px-5">
+                <div class="flex-column gap-3 mb-5">
+                    <a asp-action="Edit" asp-route-id="@item.PostId" class="shadow bg-green-500 hover:bg-green-600 focus:shadow-outline focus:outline-none text-white font-bold px-2 py-2 rounded">Edit</a> 
+                    <a asp-action="Details" asp-route-id="@item.PostId" class="shadow bg-blue-500 hover:bg-blue-600 focus:shadow-outline focus:outline-none text-white font-bold rounded px-2 py-2">Details</a> 
+                </div>             
+                <a asp-action="XoaBaiViet" asp-route-postsID="@item.PostId" class="shadow bg-red-500 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold rounded px-2 py-2">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

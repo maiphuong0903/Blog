@@ -1,0 +1,115 @@
+﻿@model Blog.Models.Post
+
+@{
+    ViewData["Title"] = "ThemBaiViet";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
+    <script type="text/javascript">       
+        function ThemPosts() {
+            var PostName = document.getElementById("PostName").value;
+            var Author = document.getElementById("Author").value;
+            var ShortContent = document.getElementById("ShortContent").value;
+            var CreateDate = document.getElementById("CreateDate").value;
+            var Picture = document.getElementById("Picture").value;
+            var AccountId = document.getElementById("AccountId").value;
+            var CatId = document.getElementById("CatId").value;
+            var Contents = document.getElementById("Contents").value;
+
+            //Cắt tên ảnh
+            var anh = Picture.split(/[\\|/]/);
+            var anhchinh = anh[anh.length - 1];
+
+            var url = 'https://localhost:7137/api/PostsAPI?postName=' + PostName + '&shortContent=' + ShortContent + '&contents=' + Contents + '&picture=' + anhchinh + '&createDate=' + CreateDate + '&author=' + Author + '&catId=' + CatId + '&AccountId=' + AccountId;
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'json',
+                dataType: 'json',
+                error: function (response) {
+                },
+                success: function (reponse) {
+                    console.log(reponse);
+                    window.location.href = 'https://localhost:7137/admin/homeadmin/ListPosts/';
+                }
+            });
+        }
+    </script>
+
+
+<h1 class="text-xl font-semibold my-7">Thêm Bài Viết</h1>
+<hr />
+
+   <div class="mb-7 border border-1 w-full h-full px-7 py-3 item-center text-xl-center font-medium">
+        <form asp-action="ThemBaiViet" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-6">
+                <label class="block mb-1 md:mb-0 pr-4">
+                    Tiêu Đề:
+                </label>
+                <input type="text" asp-for="PostName" id="PostName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <span asp-validation-for="PostName" class="text-danger"></span>
+            </div>
+            <div class="mb-6">
+                <label class="block mb-1 md:mb-0 pr-4">
+                    Tác giả:
+                </label>
+                <input type="text" asp-for="Author" id="Author" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="mb-6">
+                <label class="block mb-1 md:mb-0 pr-4">
+                    Mô tả ngắn:
+                </label>
+                <input type="text" asp-for="ShortContent" id="ShortContent" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <span asp-validation-for="ShortContent" class="text-danger"></span>                   
+            </div>  
+           
+            <div class="md:flex md:items-center gap-60">
+                <div class="mb-6">
+                    <label class="block mb-1 md:mb-0 pr-4">
+                        Ngày đăng:
+                    </label>
+                    <input asp-for="CreateDate" id="CreateDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    <span asp-validation-for="CreateDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block mb-1 md:mb-0 pr-4">
+                        Ảnh:
+                    </label>
+                    <input asp-for="Picture" id="Picture" type="file" name="userfile" />
+                    <span asp-validation-for="Picture" class="text-danger">@ViewBag.message</span>
+                </div>
+                
+            </div>          
+
+            <div class="md:flex gap-60">
+                <div class="mb-6">
+                    <label class="block mb-1 md:mb-0 pr-4">
+                        Người đăng:
+                    </label>
+                    <select asp-for="AccountId" id="AccountId" class="shadow appearance-none border rounded w-[240px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" asp-items="ViewBag.AccountId"></select>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-1 md:mb-0 pr-4">
+                        Tên chuyên mục:
+                    </label>
+                    <select asp-for="CatId" id="CatId" class="shadow appearance-none border rounded w-[240px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" asp-items="ViewBag.CatId"></select>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block mb-1 md:mb-0 pr-4">
+                    Mô tả
+                </label>              
+                <input asp-for="Contents" id="Contents" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <span asp-validation-for="Contents" class="text-danger"></span>                   
+            </div>
+            <div class="md:flex items-center gap-5 justify-center">                             
+                <input type="submit" onclick ="ThemPosts()" value="Create" class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" />
+                <a asp-action="Index" class="shadow bg-gray-500 hover:bg-gray-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Cancel</a>
+            </div>
+        </form>
+</div>
