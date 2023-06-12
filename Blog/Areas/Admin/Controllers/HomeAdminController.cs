@@ -138,6 +138,7 @@ namespace Blog.Areas.Admin.Controllers
             
             return View();
         }
+
         [Route("XoaBaiViet")]
         [HttpGet]
         public IActionResult XoaBaiViet(int postsID)
@@ -145,6 +146,40 @@ namespace Blog.Areas.Admin.Controllers
             db.Remove(db.Posts.Find(postsID));
             db.SaveChanges();
             return RedirectToAction("ListPosts");
+        }
+
+        [Route("SuaBaiViet")]
+        [HttpGet]
+        public IActionResult SuaBaiViet(int postsID)
+        {
+            var posts = db.Posts.Find(postsID);
+            ViewBag.AccountId = new SelectList(db.Accounts.ToList(), "AccountId", "FullName");
+            ViewBag.CatId = new SelectList(db.Categories.ToList(), "CatId", "CatName");
+            return View(posts);
+        }
+
+        [Route("SuaBaiViet")]
+        [HttpPut]
+        public IActionResult SuaBaiViet(IFormFile userfile)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string filename = userfile.FileName;
+                    filename = Path.GetFileName(filename);
+                    string uploadfilepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", filename);
+                    var stream = new FileStream(uploadfilepath, FileMode.Create);
+                    userfile.CopyToAsync(stream);
+                    ViewBag.message = "Upload thành công";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.message = "Error:" + ex.Message.ToString();
+                }
+                return RedirectToAction("ListPosts");
+            }
+            return View();
         }
     }
 }

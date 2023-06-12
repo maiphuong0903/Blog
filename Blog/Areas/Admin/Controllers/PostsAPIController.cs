@@ -42,13 +42,12 @@ namespace Blog.Areas.Admin.Controllers
                 posts.PostId = newPostId;
                 posts.PostName = postName;
                 posts.ShortContent = shortContent;
-                posts.Contents = contents;
+                posts.Contents = System.Web.HttpUtility.HtmlDecode(contents);
                 posts.Picture = picture;
                 posts.CreateDate = createDate;
                 posts.Author = author;
                 posts.CatId = catId;
                 posts.AccountId = accountId;
-
                 db.Posts.Add(posts);
                 db.SaveChanges();
                 return true;
@@ -60,23 +59,29 @@ namespace Blog.Areas.Admin.Controllers
         }
 
 
-        /*[HttpPut]
-        public bool SuaDanhMuc(int catID, string catName, string description)
+        [HttpPut]
+        public bool SuaBaiViet(int postsID,string postName, string shortContent, string contents, string picture, DateTime createDate, string author, int catId, int accountId)
         {
             try
-            {
-                Category cat = db.Categories.FirstOrDefault(x => x.CatId == catID);
-                if (cat == null) return false;
-                cat.CatId=catID;
-                cat.CatName=catName;
-                cat.Description=description;
+            {              
+                Post posts = db.Posts.FirstOrDefault(x => x.PostId == postsID);
+                if (posts == null) return false;
+                posts.PostId = postsID;
+                posts.PostName = postName;
+                posts.ShortContent = shortContent;
+                posts.Contents = System.Web.HttpUtility.HtmlDecode(contents);
+                posts.Picture = picture;
+                posts.CreateDate = createDate;
+                posts.Author = author;
+                posts.CatId = catId;
+                posts.AccountId = accountId;
                 db.SaveChanges();
                 return true;
             }
             catch
             {
                 return false;
-            }
-        }*/
+            }           
+        }
     }
 }
