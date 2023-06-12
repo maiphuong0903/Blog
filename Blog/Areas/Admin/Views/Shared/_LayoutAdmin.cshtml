@@ -1,4 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Blog.Models.Account
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
 <body>
     <div class="grid grid-cols-5 gap-4 h-[713px]">
         <div class="bg-blue-400 text-white cursor-pointer">
-            <h1 class="text-2xl font-semibold py-5 text-center">Xin chào ...!</h1>
+            <h1 class="text-2xl font-semibold py-5 text-center">Xin chào @Model.FullName</h1>
             <hr class="mx-4">
             <div class="mx-4 mb-4">
                 <div class="flex items-center">

@@ -16,6 +16,7 @@ namespace Blog.Areas.Admin.Controllers
         {
             return View();
         }
+
         [Route("DanhMucCategories")]   
         public IActionResult DanhMucCategories()
         {

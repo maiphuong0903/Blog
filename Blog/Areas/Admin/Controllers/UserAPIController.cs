@@ -1,6 +1,8 @@
 ﻿using Blog.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -38,7 +40,7 @@ namespace Blog.Areas.Admin.Controllers
                 account.AccountId = accountId;
                 account.FullName = fullName;
                 account.Email = email;
-                account.Password = password;
+                account.Password = GetMD5Hash(password);
                 account.RoleId= roleID;
                 account.CreateDate = createDate;
                 account.Description = description;
@@ -48,8 +50,24 @@ namespace Blog.Areas.Admin.Controllers
             }
             catch { return false; }
         }
+        private string GetMD5Hash(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-        [HttpPut]
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2")); // Mã hóa sang chuỗi hex
+                }
+
+                return sb.ToString();
+            }
+        }
+
+            [HttpPut]
         public bool EditUser(int accountId, string fullName, string email, string password, int roleID, DateTime createDate, string description)
         {
             try
@@ -59,7 +77,7 @@ namespace Blog.Areas.Admin.Controllers
                 account.AccountId = accountId;
                 account.FullName = fullName;
                 account.Email = email;
-                account.Password = password;
+                account.Password = GetMD5Hash(password);
                 account.RoleId= roleID;
                 account.CreateDate = createDate;
                 account.Description = description;
