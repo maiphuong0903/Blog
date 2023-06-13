@@ -1,6 +1,8 @@
 ﻿using Blog.Models;
 using Microsoft.AspNetCore.Http;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -37,12 +39,15 @@ namespace Blog.Areas.Admin.Controllers
             {
                 int lastPostId = db.Posts.OrderByDescending(x => x.PostId).FirstOrDefault()?.PostId ?? 0;
                 int newPostId = lastPostId + 1;
-
                 Post posts = new Post();
                 posts.PostId = newPostId;
                 posts.PostName = postName;
                 posts.ShortContent = shortContent;
-                posts.Contents = System.Web.HttpUtility.HtmlDecode(contents);
+                // Remove HTML tags and store only the text content
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(contents);
+                string plainTextContent = doc.DocumentNode.InnerText;
+                posts.Contents = plainTextContent;
                 posts.Picture = picture;
                 posts.CreateDate = createDate;
                 posts.Author = author;
@@ -69,7 +74,11 @@ namespace Blog.Areas.Admin.Controllers
                 posts.PostId = postsID;
                 posts.PostName = postName;
                 posts.ShortContent = shortContent;
-                posts.Contents = System.Web.HttpUtility.HtmlDecode(contents);
+                // Remove HTML tags and store only the text content
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(contents);
+                string plainTextContent = doc.DocumentNode.InnerText;
+                posts.Contents = plainTextContent;
                 posts.Picture = picture;
                 posts.CreateDate = createDate;
                 posts.Author = author;

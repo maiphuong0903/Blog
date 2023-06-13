@@ -1,6 +1,9 @@
-﻿using Blog.Models;
+﻿using Azure;
+using Blog.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -11,7 +14,7 @@ namespace Blog.Areas.Admin.Controllers
     {
         BlogContext db = new BlogContext();
         [Route("")]
-        [Route("index")]     
+        [Route("index")]
         public IActionResult Index()
         {
             return View();
@@ -99,9 +102,12 @@ namespace Blog.Areas.Admin.Controllers
 
         //Bài viết
         [Route("ListPosts")]
-        public IActionResult ListPosts()
+        public IActionResult ListPosts(int? page)
         {
-            var lstPosts = db.Posts.ToList();
+            int pageSize = 3;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var posts = db.Posts.AsNoTracking().OrderBy(x => x.PostId);
+            PagedList<Post> lstPosts = new PagedList<Post>(posts, pageNumber, pageSize);
             return View(lstPosts);
         }
 
@@ -181,6 +187,13 @@ namespace Blog.Areas.Admin.Controllers
                 return RedirectToAction("ListPosts");
             }
             return View();
+        }
+
+        [Route("ChiTietBaiViet")]
+        public IActionResult ChiTietBaiViet(int postsID)
+        {
+            var baiviet = db.Posts.Include(p => p.Cat).SingleOrDefault(x => x.PostId == postsID);
+            return View(baiviet);
         }
     }
 }
