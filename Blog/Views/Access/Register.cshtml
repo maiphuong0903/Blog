@@ -1,0 +1,48 @@
+﻿@model Blog.Models.Account
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Trang đăng ký</title>
+</head>
+<body class="bg-blue-400">
+    <div class="flex mt-12 justify-center mx-4 px-4">
+        <div class="border border-gray-300 p-9 w-[550px] rounded-r-lg bg-white drop-shadow-sm">
+            <div class="text-blue-400 text-3xl font-bold text-center mt-2">Create an Account!</div>
+            @using (Html.BeginForm("Register", "Access", FormMethod.Post))
+            {              
+                <div class="mt-4">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Account name</label>
+                    @Html.TextBoxFor(x=>x.FullName,new{@class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",placeholder="FullName....",required="required"})
+                    <p class="mt-2 text-red-300 text-center">@ViewBag.ErrorFullName</p>
+                </div>
+                <div class="mt-4">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+                    @Html.TextBoxFor(x=>x.Email,new{@class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",placeholder="name@gmail.com",required="required"})
+                    <p class="mt-2 text-red-300 text-center">@ViewBag.ErrorEmail</p>
+                </div>
+                <div class="my-4">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                    @Html.TextBoxFor(x=>x.Password,new{@class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",id="Password", type="password",placeholder="••••••••",required="required",autofocus="autofocus"})
+                </div>
+                <p class="mt-2 text-red-300 text-center">@ViewBag.error</p>              
+                <button type="submit" class="w-full bg-blue-400 px-4 py-3 rounded-xl text-white my-4">Register</button>
+                <hr>
+                <button type="submit" class="w-full bg-red-500 px-4 py-3 rounded-xl text-white mt-3">Register with Google</button>
+                <button type="submit" class="w-full bg-blue-900 px-4 py-3 rounded-xl text-white my-3">Register with FaceBook</button>
+                <hr>
+                <p class="text-center text-[14px] text-blue-400 font-md mt-3"><a asp-action="Login">Already have an account? Login!</a></p>
+            }               
+        </div>
+    </div>
+</body>
+</html>

@@ -45,6 +45,52 @@ namespace Blog.Controllers
             }
             return View();
         }
+        
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(Account user)
+        {
+            //Kiểm tra xem fullname đã tồn tại trong cơ sở dữ liệu hay chưa
+            bool isFullNameExists = db.Accounts.Any(a => a.FullName == user.FullName);
+
+            // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+            bool isEmailExists = db.Accounts.Any(a => a.Email == user.Email);
+
+            if (isFullNameExists)
+            {
+                ViewBag.ErrorFullName = "Tên tài khoản đã tồn tại.";
+                return View("Register");
+            }
+            else if (isEmailExists)
+            {
+                ViewBag.ErrorEmail = "Email đã tồn tại.";
+                return View("Register");
+            }          
+            else
+            {
+                // Tìm giá trị AccountId lớn nhất hiện tại
+                int maxAccountId = db.Accounts.Max(a => a.AccountId);
+
+                // Tăng giá trị AccountId lên 1
+                user.AccountId = maxAccountId + 1;
+
+                user.RoleId = 2;
+                user.Description = "Người Dùng";
+                user.Password = GetMD5Hash(user.Password);
+                db.Accounts.Add(user);
+                db.SaveChanges();
+                return RedirectToAction("Login", "Access");
+            }          
+        }
+
+
+
         private string GetMD5Hash(string input)
         {
             using (MD5 md5 = MD5.Create())
