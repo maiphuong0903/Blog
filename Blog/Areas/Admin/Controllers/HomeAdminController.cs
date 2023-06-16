@@ -108,6 +108,12 @@ namespace Blog.Areas.Admin.Controllers
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
             var posts = db.Posts.AsNoTracking().OrderBy(x => x.PostId);
             PagedList<Post> lstPosts = new PagedList<Post>(posts, pageNumber, pageSize);
+            var pageNumbers = new List<int>(lstPosts.PageCount);
+            for (int i = 1; i <= lstPosts.PageCount; i++)
+            {
+                pageNumbers.Add(i);
+            }
+            ViewBag.PageNumbers = pageNumbers;
             return View(lstPosts);
         }
 

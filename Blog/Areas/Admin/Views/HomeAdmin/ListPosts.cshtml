@@ -1,5 +1,7 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<Blog.Models.Post>
+@using Blog.Models;
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<Blog.Models.Post>
 
 @{
     ViewData["Title"] = "ListPosts";
@@ -19,16 +21,16 @@
             </th>
             <th class="border">
                 Tên Bài Viết
-            </th>
-            <th class="border">
-                Mô tả ngắn
-            </th>  
+            </th>             
             <th class="border">
                 Tác Gỉa
             </th>
             <th class="border">
                 Ảnh
-            </th>          
+            </th> 
+            <th class="border">
+                Ngày Tạo
+            </th>
             <th class="border"></th>
         </tr>
     </thead>
@@ -40,24 +42,34 @@
             </td>
             <td class="text-center border w-[300px]">
                 @Html.DisplayFor(modelItem => item.PostName)
-            </td>
-            <td class="border py-4 w-[430px] text-center">
-                @Html.DisplayFor(modelItem => item.ShortContent)
-            </td>
+            </td>           
             <td class="border py-4 w-[150px] text-center">
                 @Html.DisplayFor(modelItem => item.Author)
-            </td>
+            </td>          
             <td class="border py-4 w-[200px]">
                 <img src="@Url.Content("~/img/" + item.Picture)" alt="Ảnh" class="w-[200px] h-[150px] px-3 py-2 object-cover" />
-            </td>           
-            <td class="border w-[180px] px-5">
-                <div class="flex-column gap-3 mb-5">
-                    <a asp-action="SuaBaiViet" asp-route-postsID="@item.PostId" class="shadow bg-green-500 hover:bg-green-600 focus:shadow-outline focus:outline-none text-white font-bold px-2 py-2 rounded">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.PostId" class="shadow bg-blue-500 hover:bg-blue-600 focus:shadow-outline focus:outline-none text-white font-bold rounded px-2 py-2">Details</a> 
-                </div>             
+            </td>
+            <td class="border py-4 w-[100px] text-center">
+                @if (item.CreateDate.HasValue)
+                    {
+                        @item.CreateDate.Value.ToShortDateString()
+                    }
+            </td>
+            <td class="border w-[200px] px-5">
+                <a asp-action="SuaBaiViet" asp-route-postsID="@item.PostId" class="shadow bg-green-500 hover:bg-green-600 focus:shadow-outline focus:outline-none text-white font-bold px-2 py-2 rounded">Edit</a>
+                <a asp-action="ChiTietBaiViet" asp-route-postsID="@item.PostId" class="shadow bg-blue-500 hover:bg-blue-600 focus:shadow-outline focus:outline-none text-white font-bold rounded px-2 py-2">Details</a>            
                 <a asp-action="XoaBaiViet" asp-route-postsID="@item.PostId" class="shadow bg-red-500 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold rounded px-2 py-2">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<div class="flex items-center justify-center space-x-4 my-4 mx-3 ">
+    @foreach (var pageNumber in ViewBag.PageNumbers)
+    {
+        <a href="@Url.Action("ListPosts", new { page = pageNumber })" class="px-2 py-2 w-[50px] text-center border border-1 text-gray-700 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 text-blue-500 hover:text-blue-700">
+            @pageNumber
+        </a>
+    }
+</div>
