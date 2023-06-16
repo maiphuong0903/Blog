@@ -29,11 +29,18 @@ namespace Blog.Controllers
                 string hashedPassword = GetMD5Hash(user.Password);
 
                 var u = db.Accounts.FirstOrDefault(x => x.FullName.Equals(user.FullName) && x.Password.Equals(hashedPassword));
-
-                if (u != null)
+                if (u != null && u.RoleId == 1) {
+                    HttpContext.Session.SetString("FullName", u.FullName.ToString());
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if(u != null && u.RoleId == 2)
                 {
                     HttpContext.Session.SetString("FullName", u.FullName.ToString());
                     return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.ThongBao = "Tài khoản hoặc mật khẩu sai";
                 }
             }
             return View();

@@ -2,7 +2,8 @@
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_LayoutBlog.cshtml";
 }
-@model List<Post>
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<Post>
 
 <div class="border border-1 w-full h-[50px] py-3 px-3">
     <a class="ml-[135px] text-md font-medium" asp-action="Index">Home</a>
@@ -26,6 +27,9 @@
 
     }
 </div>
-    
+<div class="flex justify-center items-center space-x-2 border border-gray-300 rounded-md p-2 bg-gray-100">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+</div>
+
 
 

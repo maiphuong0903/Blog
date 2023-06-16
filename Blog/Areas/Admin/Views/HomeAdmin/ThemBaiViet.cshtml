@@ -133,12 +133,12 @@
                 <label class="block mb-1 md:mb-0 pr-4">
                     Mô tả
                 </label>
-                <input asp-for="Contents" id="Contents" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                <textarea asp-for="Contents" id="Contents" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" ></textarea>
                 <span asp-validation-for="Contents" class="text-danger"></span>                   
             </div>
             <div class="md:flex items-center gap-5 justify-center">                             
                 <input type="submit" onclick ="ThemPosts()" value="Create" class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" />
-                <a asp-action="Index" class="shadow bg-gray-500 hover:bg-gray-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Cancel</a>
+                <a asp-action="ListPosts" class="shadow bg-gray-500 hover:bg-gray-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">Cancel</a>
             </div>
         </form>
 </div>

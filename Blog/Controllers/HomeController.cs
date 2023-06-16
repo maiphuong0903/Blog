@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using X.PagedList;
 
 namespace Blog.Controllers
 {
@@ -14,15 +15,19 @@ namespace Blog.Controllers
         {
             _logger = logger;
         }
-        
-        public IActionResult Index()
+
+        public IActionResult Index(int? page)
         {
-            var sp = db.Posts.ToList();
+            int pageSize = 6;
+            int pageNumber = page == null || page < 0 ? 1 :page.Value;
+
+            var sp = db.Posts.AsNoTracking().OrderBy(x=>x.PostName);
+            PagedList<Post> lst = new PagedList<Post>(sp,pageNumber,pageSize);
             var spFood = db.Posts.Where(x => x.CatId == 1);
             var spTravel = db.Posts.Where(x => x.CatId == 2);
             ViewBag.spFood = spFood;
             ViewBag.spTravel = spTravel;
-            return View(sp);
+            return View(lst);
         }
         
         public IActionResult ChiTietSanPham(int masp)
@@ -33,10 +38,14 @@ namespace Blog.Controllers
 
         [Route("TatCaSP")]
         [HttpGet]
-        public IActionResult TatcaSP()
+        public IActionResult TatcaSP(int? page)
         {
-            var sp = db.Posts.ToList();
-            return View(sp);
+            int pageSize = 6;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+
+            var sp = db.Posts.AsNoTracking().OrderBy(x => x.PostName);
+            PagedList<Post> lst = new PagedList<Post>(sp, pageNumber, pageSize);       
+            return View(lst);
         }
         public IActionResult Privacy()
         {

@@ -11,28 +11,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Trang đăng nhập</title>
+    <script type="text/javascript">
+        function valid() {
+            if (document.getElementById("FullName").value == "") {
+                alert("Vui lòng nhập User!");
+                return false;
+            }
+            if (document.getElementById("Password").value == "") {
+                alert("Vui lòng nhập Pass!");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
+
 <body class="bg-blue-400">
     <div class="flex items-center justify-center mx-4 px-4 mt-12">       
         <div class="border border-gray-300 p-9 w-[450px] rounded-r-lg bg-white drop-shadow-sm">
             <div class="text-blue-400 text-3xl font-bold text-center mt-2">BlogPhg</div>
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center mt-6">
                 Sign in to your account
-            </h1>
+            </h1>           
            @* <form class="mt-6" method="post">*@
             @using (Html.BeginForm("Login", "Access", FormMethod.Post))
             {
                 <div class="mb-4 text-red-500"></div>
                 <div>
                     <label for="email" class="block mb-2 text-md font-medium text-gray-900">Your email</label>
-                    @Html.TextBoxFor(x=>x.FullName,new{@class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-[48px] leading-tight focus:outline-none focus:shadow-outline" ,placeholder="name@gmail.com" ,required="required",autofocus="autofocus"})
+                    @Html.TextBoxFor(x=>x.FullName,new{@class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-[48px] leading-tight focus:outline-none focus:shadow-outline",id ="FullName" ,placeholder="name@gmail.com" ,required="required",autofocus="autofocus"})
                     @*<input type="email" name="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-[48px] leading-tight focus:outline-none focus:shadow-outline" placeholder="name@gmail.com" required="">*@
                 </div>
                 <div class="mt-4">
                     <label for="password" class="block mb-2 text-md font-medium text-gray-900 ">Password</label>
-                    @Html.TextBoxFor(x=>x.Password,new{@class="shadow appearance-none border rounded w-full h-[48px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",type="password",placeholder="••••••••",required="required",autofocus="autofocus"})
+                    @Html.TextBoxFor(x=>x.Password,new{@class="shadow appearance-none border rounded w-full h-[48px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",id="Password", type="password",placeholder="••••••••",required="required",autofocus="autofocus"})
                     @*<input type="password" name="password" id="password" placeholder="••••••••" class="shadow appearance-none border rounded w-full h-[48px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required="">*@
                 </div>
+                <p class="mt-2 text-red-300 text-center">@ViewBag.ThongBao</p>
                 <button type="submit" class="w-full bg-blue-400 px-4 py-3 rounded-xl text-white my-4">Sign in</button>
                 <hr>
                 <button type="submit" class="w-full bg-red-500 px-4 py-3 rounded-xl text-white mt-3">Login with Google</button>

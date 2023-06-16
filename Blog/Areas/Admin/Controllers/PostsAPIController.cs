@@ -12,7 +12,7 @@ namespace Blog.Areas.Admin.Controllers
     {
         BlogContext db = new BlogContext();
         [HttpGet]
-        public IEnumerable<Post> GetAllPosts()
+        public List<Post> GetAllPosts()
         {
             var posts = db.Posts.ToList();
             return posts;
@@ -43,11 +43,7 @@ namespace Blog.Areas.Admin.Controllers
                 posts.PostId = newPostId;
                 posts.PostName = postName;
                 posts.ShortContent = shortContent;
-                // Remove HTML tags and store only the text content
-                HtmlDocument doc = new HtmlDocument();
-                doc.LoadHtml(contents);
-                string plainTextContent = doc.DocumentNode.InnerText;
-                posts.Contents = plainTextContent;
+                posts.Contents = System.Web.HttpUtility.HtmlDecode(contents);
                 posts.Picture = picture;
                 posts.CreateDate = createDate;
                 posts.Author = author;
@@ -74,11 +70,7 @@ namespace Blog.Areas.Admin.Controllers
                 posts.PostId = postsID;
                 posts.PostName = postName;
                 posts.ShortContent = shortContent;
-                // Remove HTML tags and store only the text content
-                HtmlDocument doc = new HtmlDocument();
-                doc.LoadHtml(contents);
-                string plainTextContent = doc.DocumentNode.InnerText;
-                posts.Contents = plainTextContent;
+                posts.Contents = System.Web.HttpUtility.HtmlDecode(contents);             
                 posts.Picture = picture;
                 posts.CreateDate = createDate;
                 posts.Author = author;

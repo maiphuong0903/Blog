@@ -17,8 +17,13 @@
         <p class="font-serif leading-6">@Model.ShortContent</p>
     </div>
 </div>
-<div class="">
-    <p class="ml-[300px] py-3 w-[923px] leading-7 font-serif">@Model.Contents</p>
+<div class="ml-[300px] py-3 w-[948px] leading-7 font-serif">
+    <tetextarea>
+        @{
+            // Assuming you have a variable named 'content' containing the retrieved content
+            string decodedContent = System.Web.HttpUtility.HtmlDecode(Model.Contents);
+        }
+    @Html.Raw(decodedContent)</tetextarea>
 </div>
 
 <div class="w-[923px] justify-center border border-1 bg-white drop-shadow-xl px-6 py-6 mx-64 my-7 ml-[300px]">
