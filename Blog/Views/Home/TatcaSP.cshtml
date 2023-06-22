@@ -16,7 +16,7 @@
                 <div>
                     <img class="h-[200px] w-[360px] object-cover" src="@Url.Content("../img/"+item.Picture)" alt="">
                     <div class="border border-1 w-[360px] py-3 px-2 bg-white drop-shadow-xl h-[120px]">
-                        <h1 class="font-medium"><a maspasp-controller="Home" asp-action="ChiTietSanPham" asp-route-masp="@item.PostId"> @item.PostName</a></h1>
+                        <h1 class="font-medium"><a maspasp-controller="Home" asp-action="ChiTietBaiViet" asp-route-masp="@item.PostId"> @item.PostName</a></h1>
                         <div class="flex gap-4">
                             <h2 class="font-medium"><span class="font-normal text-gray-400">by</span> @item.Author</h2>
                             <span>|</span>
@@ -27,9 +27,12 @@
 
     }
 </div>
-<div class="flex justify-center items-center space-x-2 border border-gray-300 rounded-md p-2 bg-gray-100">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+
+<div class="flex items-center justify-center my-4 mx-3 border border-1 mx-[600px] bg-gray-100 rounded-md">
+    @foreach (var pageNumber in ViewBag.PageNumbers)
+    {
+            <a href="@Url.Action("TatCaSP", new { page = pageNumber })" class="px-2 py-2 w-[40px] text-center border border-1 text-gray-700 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 text-blue-500 hover:text-blue-700">
+            @pageNumber
+                </a>
+    }
 </div>
-
-
-

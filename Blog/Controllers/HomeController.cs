@@ -1,7 +1,13 @@
 ﻿using Blog.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
+using System.Security.Claims;
+using System.Xml;
 using X.PagedList;
 
 namespace Blog.Controllers
@@ -16,25 +22,33 @@ namespace Blog.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(int? page)
+        public IActionResult Index()
         {
-            int pageSize = 6;
-            int pageNumber = page == null || page < 0 ? 1 :page.Value;
-
-            var sp = db.Posts.AsNoTracking().OrderBy(x=>x.PostName);
-            PagedList<Post> lst = new PagedList<Post>(sp,pageNumber,pageSize);
+            var lstbaiviet = db.Posts.ToList();
             var spFood = db.Posts.Where(x => x.CatId == 1);
             var spTravel = db.Posts.Where(x => x.CatId == 2);
             ViewBag.spFood = spFood;
             ViewBag.spTravel = spTravel;
-            return View(lst);
+            return View(lstbaiviet);
         }
-        
-        public IActionResult ChiTietSanPham(int masp)
+
+        [Route("ChiTietBaiViet")]
+        [HttpGet]
+        public IActionResult ChiTietBaiViet(int masp)
         {
-            var sp = db.Posts.SingleOrDefault(x => x.PostId == masp);
-            return View(sp);
+           
+            string nameUser = "";
+
+            if (HttpContext.Session.GetString("FullName") != null)
+            {
+                nameUser = HttpContext.Session.GetString("FullName");
+            }
+            ViewBag.NameUser = nameUser;
+            var baiviet = db.Posts.SingleOrDefault(x => x.PostId == masp);
+            return View(baiviet);
+
         }
+
 
         [Route("TatCaSP")]
         [HttpGet]
@@ -42,9 +56,14 @@ namespace Blog.Controllers
         {
             int pageSize = 6;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
-
             var sp = db.Posts.AsNoTracking().OrderBy(x => x.PostName);
-            PagedList<Post> lst = new PagedList<Post>(sp, pageNumber, pageSize);       
+            PagedList<Post> lst = new PagedList<Post>(sp, pageNumber, pageSize);
+            var pageNumbers = new List<int>(lst.PageCount);
+            for (int i = 1; i <= lst.PageCount; i++)
+            {
+                pageNumbers.Add(i);
+            }
+            ViewBag.PageNumbers = pageNumbers;                                     
             return View(lst);
         }
         public IActionResult Privacy()
