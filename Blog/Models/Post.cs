@@ -26,4 +26,6 @@ public partial class Post
     public virtual Account Account { get; set; } = null!;
 
     public virtual Category Cat { get; set; } = null!;
+
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }

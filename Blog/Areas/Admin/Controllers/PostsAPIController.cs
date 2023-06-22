@@ -12,7 +12,7 @@ namespace Blog.Areas.Admin.Controllers
     {
         BlogContext db = new BlogContext();
         [HttpGet]
-        public List<Post> GetAllPosts()
+        public IEnumerable<Post> GetAllUser()
         {
             var posts = db.Posts.ToList();
             return posts;

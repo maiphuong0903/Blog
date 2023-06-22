@@ -8,12 +8,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         function toggleSubmenu() {
-            const submenu = document.querySelector('.submenu');
-            const liElement = document.querySelector('.relative');
-
+            var submenu = document.querySelector('.submenu');
             submenu.classList.toggle('hidden');
-            liElement.classList.toggle('border-selected');
         }
+
+        window.addEventListener('click', function (event) {
+            var target = event.target;
+            var submenu = document.querySelector('.submenu');
+
+            if (!target.closest('.relative')) {
+                submenu.classList.add('hidden');
+            }
+        });
+
     </script>
     <title>Trang Chủ</title>
 </head>

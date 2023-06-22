@@ -19,6 +19,8 @@ public partial class BlogContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Comment> Comments { get; set; }
+
     public virtual DbSet<Post> Posts { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -36,7 +38,7 @@ public partial class BlogContext : DbContext
             entity.Property(e => e.AccountId)
                 .ValueGeneratedNever()
                 .HasColumnName("AccountID");
-            entity.Property(e => e.CreateDate).HasColumnType("date");
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.FullName).HasMaxLength(50);
@@ -59,6 +61,27 @@ public partial class BlogContext : DbContext
             entity.Property(e => e.CatName).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.ToTable("Comment");
+
+            entity.Property(e => e.CommentId)
+                .ValueGeneratedNever()
+                .HasColumnName("CommentID");
+            entity.Property(e => e.AccountId).HasColumnName("AccountID");
+            entity.Property(e => e.CommentDate).HasColumnType("datetime");
+            entity.Property(e => e.ParentId).HasColumnName("ParentID");
+            entity.Property(e => e.PostId).HasColumnName("PostID");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.AccountId)
+                .HasConstraintName("FK_Comment_Account");
+
+            entity.HasOne(d => d.Post).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.PostId)
+                .HasConstraintName("FK_Comment_Post");
+        });
+
         modelBuilder.Entity<Post>(entity =>
         {
             entity.ToTable("Post");
@@ -69,7 +92,7 @@ public partial class BlogContext : DbContext
             entity.Property(e => e.AccountId).HasColumnName("AccountID");
             entity.Property(e => e.Author).HasMaxLength(50);
             entity.Property(e => e.CatId).HasColumnName("CatID");
-            entity.Property(e => e.CreateDate).HasColumnType("date");
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.Picture).HasMaxLength(50);
             entity.Property(e => e.PostName).HasMaxLength(255);
             entity.Property(e => e.ShortContent).HasMaxLength(255);
